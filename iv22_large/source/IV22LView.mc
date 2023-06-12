@@ -42,9 +42,6 @@ class IV22LView extends WatchUi.WatchFace {
         y1 = (dc.getHeight() - 2 * dig_height - DY) / 2;
         x2 = x1 + dig_width + DX;
         y2 = y1 + dig_height + DY;
-
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        dc.clear();
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -66,6 +63,8 @@ class IV22LView extends WatchUi.WatchFace {
         var m1 = time.min / 10;
         var m2 = time.min % 10;
 
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
         dc.drawBitmap(x1, y1, digits[h1]);
         dc.drawBitmap(x2, y1, digits[h2]);
         dc.drawBitmap(x1, y2, digits[m1]);
