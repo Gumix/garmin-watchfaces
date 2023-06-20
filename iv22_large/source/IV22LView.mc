@@ -8,7 +8,6 @@ class IV22LView extends WatchUi.WatchFace {
     const DY = 42;
 
     var digits;
-    var aod_textures;
 
     var x1 as Number = 0;
     var y1 as Number = 0;
@@ -20,15 +19,6 @@ class IV22LView extends WatchUi.WatchFace {
 
     function initialize() {
         WatchFace.initialize();
-    }
-
-    private function createTexture(x as Number) {
-        var bitmap = Graphics.createBufferedBitmap({:width => 2, :height => 1});
-        var dc = bitmap.get().getDc();
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-        dc.clear();
-        dc.drawPoint(x, 0);
-        return new Graphics.BitmapTexture({ :bitmap => bitmap });
     }
 
     // Load your resources here
@@ -46,10 +36,6 @@ class IV22LView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Drawables.Dig9)
         ] as Array<Graphics.BitmapReference>;
  
-        aod_textures = [
-            createTexture(0), createTexture(1)
-        ] as Array<Graphics.BitmapTexture>;
-
         var dig_width = digits[0].getWidth();
         var dig_height = digits[0].getHeight();
 
@@ -91,8 +77,10 @@ class IV22LView extends WatchUi.WatchFace {
             var width = 2 * digits[0].getWidth() + DX;
             var height = 2 * digits[0].getHeight() + DY;
 
-            dc.setFill(aod_textures[time.min % 2]);
-            dc.fillRectangle(x1, y1, width, height);
+            for (var i = 0; i < width; i += 2) {
+                var x = x1 + i + time.min % 2;
+                dc.drawLine(x, y1, x, y1 + height);
+            }
         }
     }
 
