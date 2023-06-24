@@ -1,0 +1,14 @@
+<drawables>
+    <bitmap id="Dig0" filename="0.png" />
+    <bitmap id="Dig1" filename="1.png" />
+    <bitmap id="Dig2" filename="2.png" />
+    <bitmap id="Dig3" filename="3.png" />
+    <bitmap id="Dig4" filename="4.png" />
+    <bitmap id="Dig5" filename="5.png" />
+    <bitmap id="Dig6" filename="6.png" />
+    <bitmap id="Dig7" filename="7.png" />
+    <bitmap id="Dig8" filename="8.png" />
+    <bitmap id="Dig9" filename="9.png" />
+    <bitmap id="Dot" filename="dot.png" />
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+</drawables>
