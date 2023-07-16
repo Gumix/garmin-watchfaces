@@ -19,28 +19,6 @@ class IV22MView extends WatchUi.WatchFace {
     // Always On Display burn-in protection mode
     private var in_aod_mode as Boolean = false;
 
-    // In AOD mode, if any pixel is on for longer than 3 minutes, the system
-    // will shut off the screen. Use these 4 layers for masking.
-    private var mask_layers = new Array<Layer>[4];
-
-    // Allocate a new layer and fill it with a pattern
-    private function initMaskLayer(n as Number) {
-        var bitmap = Graphics.createBufferedBitmap({:width=>2, :height=>2});
-        var dc = bitmap.get().getDc();
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-        dc.clear();
-        dc.drawPoint((n >> 1) & 1, n & 1);
-        var texture = new Graphics.BitmapTexture({:bitmap=>bitmap});
-
-        var layer = new Layer({:locX=>xd[:h1], :locY=>yd[:h1], :width=>da_width,
-                               :height=>da_height, :visibility=>false});
-        addLayer(layer);
-        mask_layers[n] = layer;
-        layer.getDc().setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        layer.getDc().setFill(texture);
-        layer.getDc().fillRectangle(0, 0, da_width, da_height);
-    }
-
     function initialize() {
         WatchFace.initialize();
     }
@@ -91,17 +69,6 @@ class IV22MView extends WatchUi.WatchFace {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        // This is ridiculous, but you can't draw on a layer in onLayout(),
-        // for this reason mask_layers are initialized here.
-        if (mask_layers[0] == null) {
-            for (var i = 0; i < mask_layers.size(); i++) {
-                initMaskLayer(i);
-            }
-        }
-        for (var i = 0; i < mask_layers.size(); i++) {
-            mask_layers[i].setVisible(false);
-        }
-
         var time = System.getClockTime();
         var hour = time.hour;
 
@@ -124,8 +91,13 @@ class IV22MView extends WatchUi.WatchFace {
         dc.drawBitmap(xd[:m1], yd[:m1], digits[m1]);
         dc.drawBitmap(xd[:m2], yd[:m2], digits[m2]);
 
+        // In AOD mode, if any pixel is on for longer than 3 minutes, the system
+        // will shut off the screen. Use alternating line pattern for masking.
         if (in_aod_mode) {
-            mask_layers[time.min % mask_layers.size()].setVisible(true);
+            for (var i = 0; i < da_width; i += 2) {
+                var x = xd[:h1] + i + time.min % 2;
+                dc.drawLine(x, yd[:h1], x, yd[:h1] + da_height);
+            }
         }
     }
 
