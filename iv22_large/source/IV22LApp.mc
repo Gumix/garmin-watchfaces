@@ -1,6 +1,7 @@
-import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Application;
+import Toybox.Application.Storage;
 
 class IV22LApp extends Application.AppBase {
 
@@ -21,8 +22,19 @@ class IV22LApp extends Application.AppBase {
         return [ new IV22LView() ] as Array<Views or InputDelegates>;
     }
 
+    // Return the settings view and delegate
+    function getSettingsView() {
+        return [new IV22LMenu(), new IV22LMenuDelegate()];
+    }
 }
 
 function getApp() as IV22LApp {
     return Application.getApp() as IV22LApp;
+}
+
+function getSetting(id as String, default_value as Boolean) as Boolean {
+    if (Storage.getValue(id) == null) {
+        return default_value;
+    }
+    return Storage.getValue(id);
 }
