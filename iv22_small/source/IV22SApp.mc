@@ -1,24 +1,25 @@
-import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Application;
 
 class IV22SApp extends Application.AppBase {
 
-    function initialize() {
+    // Constructor
+    public function initialize() {
         AppBase.initialize();
     }
 
-    // onStart() is called on application start up
-    function onStart(state as Dictionary?) as Void {
+    // onStart() is called on application startup
+    public function onStart(state as Dictionary?) as Void {
     }
 
-    // onStop() is called when your application is exiting
-    function onStop(state as Dictionary?) as Void {
+    // onStop() is called on application shutdown
+    public function onStop(state as Dictionary?) as Void {
     }
 
-    // Return the initial view of your application here
-    function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new IV22SView() ] as Array<Views or InputDelegates>;
+    // Return the initial view of the application
+    public function getInitialView() as [Views] or [Views, InputDelegates] {
+        return [new IV22SView()];
     }
 
 }
