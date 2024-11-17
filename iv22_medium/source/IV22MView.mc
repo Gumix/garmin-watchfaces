@@ -108,7 +108,10 @@ class IV22MView extends WatchUi.WatchFace {
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-        dc.drawBitmap(xd[:h1], yd[:h1], digits[h1]);
+
+        if (h1 > 0 || getSetting("show_leading_zero", true)) {
+            dc.drawBitmap(xd[:h1], yd[:h1], digits[h1]);
+        }
         dc.drawBitmap(xd[:h2], yd[:h2], digits[h2]);
         dc.drawBitmap(xd[:d1], yd[:d1], digits[dot]);
         dc.drawBitmap(xd[:d2], yd[:d2], digits[dot]);
@@ -120,7 +123,7 @@ class IV22MView extends WatchUi.WatchFace {
         var show_seconds = !in_sleep_mode
                            && dc.getWidth() > 360
                            && dc.getHeight() > 360
-                           && getSetting("seconds_on", true);
+                           && getSetting("show_seconds", true);
         if (show_seconds) {
             if (getSetting("seconds_as_dot", true)) {
                 // Show seconds as a single dot.
