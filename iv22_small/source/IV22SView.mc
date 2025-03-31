@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 class IV22SView extends WatchUi.WatchFace {
     // The dot image is stored after digit 9
     private enum {dot = 10}
-    private var digits = new Array<BitmapReference>[11];
+    private var digits as Array<BitmapReference> = new Array<BitmapReference>[11];
 
     // The position of hours, minutes, seconds and dots
     private var xd as Dictionary<Symbol, Number> = {};

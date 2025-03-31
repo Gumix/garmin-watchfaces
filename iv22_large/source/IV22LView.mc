@@ -8,15 +8,15 @@ class IV22LView extends WatchUi.WatchFace {
 
     // The dot image is stored after digit 9
     private enum {dot = 10}
-    private var digits = new Array<BitmapReference>[11];
+    private var digits as Array<BitmapReference> = new Array<BitmapReference>[11];
 
     // Positions of hour and minute digits
-    private var xd = new Array<Number>[2];
-    private var yd = new Array<Number>[2];
+    private var xd as Array<Number> = new Array<Number>[2];
+    private var yd as Array<Number> = new Array<Number>[2];
 
     // Positions of second marks
-    private var xs = new Array<Number>[60];
-    private var ys = new Array<Number>[60];
+    private var xs as Array<Number> = new Array<Number>[60];
+    private var ys as Array<Number> = new Array<Number>[60];
 
     // Dimensions of the drawable area
     private var da_width as Number = 0;

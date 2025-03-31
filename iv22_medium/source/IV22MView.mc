@@ -11,15 +11,15 @@ class IV22MView extends WatchUi.WatchFace {
 		dot = 10,
 		small_dot = 11
 	}
-    private var digits = new Array<BitmapReference>[12];
+    private var digits as Array<BitmapReference> = new Array<BitmapReference>[12];
 
     // Positions of hours, minutes and dots
     private var xd as Dictionary<Symbol, Number> = {};
     private var yd as Dictionary<Symbol, Number> = {};
 
     // Positions of second marks
-    private var xs = new Array<Number>[60];
-    private var ys = new Array<Number>[60];
+    private var xs as Array<Number> = new Array<Number>[60];
+    private var ys as Array<Number> = new Array<Number>[60];
 
     // Dimensions of the drawable area
     private var da_width as Number = 0;
