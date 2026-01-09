@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.Application.Storage;
 
@@ -8,15 +9,18 @@ class IV22LMenu extends WatchUi.Menu2 {
     function initialize() {
         Menu2.initialize({:title => "IV-22 Large"});
 
-        var item_id = "seconds_on";
-        var is_enabled = getSetting(item_id, true);
-        Menu2.addItem(new WatchUi.ToggleMenuItem("Show seconds", null,
-                                                 item_id, is_enabled, null));
-        item_id = "seconds_as_dot";
-        is_enabled = getSetting(item_id, true);
-        Menu2.addItem(new WatchUi.ToggleMenuItem("Single dot vs.",
-                                                 "progress bar",
-                                                 item_id, is_enabled, null));
+        var device = System.getDeviceSettings();
+        if (device.screenWidth > 390 && device.screenHeight > 390) {
+            var item_id = "seconds_on";
+            var is_enabled = getSetting(item_id, true);
+            Menu2.addItem(new WatchUi.ToggleMenuItem("Show seconds", null,
+                                                     item_id, is_enabled, null));
+            item_id = "seconds_as_dot";
+            is_enabled = getSetting(item_id, true);
+            Menu2.addItem(new WatchUi.ToggleMenuItem("Single dot vs.",
+                                                     "progress bar",
+                                                     item_id, is_enabled, null));
+        }
     }
 }
 

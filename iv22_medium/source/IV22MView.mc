@@ -109,9 +109,7 @@ class IV22MView extends WatchUi.WatchFace {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        if (h1 > 0 || getSetting("show_leading_zero", true)) {
-            dc.drawBitmap(xd[:h1], yd[:h1], digits[h1]);
-        }
+        dc.drawBitmap(xd[:h1], yd[:h1], digits[h1]);
         dc.drawBitmap(xd[:h2], yd[:h2], digits[h2]);
         dc.drawBitmap(xd[:d1], yd[:d1], digits[dot]);
         dc.drawBitmap(xd[:d2], yd[:d2], digits[dot]);
