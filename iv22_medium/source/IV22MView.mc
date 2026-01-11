@@ -3,6 +3,7 @@ import Toybox.Math;
 import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Toybox.Application.Properties;
 
 class IV22MView extends WatchUi.WatchFace {
 
@@ -121,9 +122,9 @@ class IV22MView extends WatchUi.WatchFace {
         var show_seconds = !in_sleep_mode
                            && dc.getWidth() > 360
                            && dc.getHeight() > 360
-                           && getSetting("show_seconds", true);
+                           && Properties.getValue("show_seconds");
         if (show_seconds) {
-            if (getSetting("seconds_as_dot", true)) {
+            if (Properties.getValue("seconds_as_dot")) {
                 // Show seconds as a single dot.
                 dc.drawBitmap(xs[time.sec], ys[time.sec], digits[small_dot]);
             } else {
