@@ -1,0 +1,8 @@
+<settings>
+    <setting propertyKey="@Properties.show_seconds" title="Show seconds">
+        <settingConfig type="boolean" />
+    </setting>
+    <setting propertyKey="@Properties.seconds_as_dot" title="Single dot vs. progress bar">
+        <settingConfig type="boolean" />
+    </setting>
+</settings>
