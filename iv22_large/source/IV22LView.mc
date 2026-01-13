@@ -7,48 +7,82 @@ import Toybox.Application.Properties;
 
 class IV22LView extends WatchUi.WatchFace {
 
-    // The dot image is stored after digit 9
+    // The dot image is stored after digit 9.
     private enum {dot = 10}
-    private var digits as Array<BitmapReference> = new Array<BitmapReference>[11];
 
-    // Positions of hour and minute digits
+    // Bitmap references for digits 0-9 and the dot, stored in 2 formats:
+    // 24-bit RGB (Natural Color) and 8-bit GrayScale (for tinting).
+    private var images_nc as Array<BitmapReference> = new Array<BitmapReference>[11];
+    private var images_gs as Array<BitmapReference> = new Array<BitmapReference>[11];
+
+    // Positions of hour and minute digits.
     private var xd as Array<Number> = new Array<Number>[2];
     private var yd as Array<Number> = new Array<Number>[2];
 
-    // Positions of second marks
+    // Positions of second marks.
     private var xs as Array<Number> = new Array<Number>[60];
     private var ys as Array<Number> = new Array<Number>[60];
 
-    // Dimensions of the drawable area
+    // Dimensions of the drawable area.
     private var da_width as Number = 0;
     private var da_height as Number = 0;
 
-    // In low power mode the second marks are not displayed
+    // In low power mode the second marks are not displayed.
     private var in_sleep_mode as Boolean = false;
+
+    // PNG packing format is not supported by some devices.
+    (:disable_tint)
+    function drawBitmap(dc as Dc, x as Number, y as Number, bmp_id as Number,
+                        color as Number) as Void {
+        dc.drawBitmap(x, y, images_nc[bmp_id]);
+    }
+
+    (:enable_tint)
+    function drawBitmap(dc as Dc, x as Number, y as Number, bmp_id as Number,
+                        color as Number) as Void {
+        if (color == 0x000000) {
+            // Natural color (no tint).
+            dc.drawBitmap(x, y, images_nc[bmp_id]);
+        } else {
+            dc.drawBitmap2(x, y, images_gs[bmp_id], {:tintColor => color});
+        }
+    }
 
     function initialize() {
         WatchFace.initialize();
     }
 
-    // Load your resources here
+    // Load resources and precompute the positions.
     function onLayout(dc as Dc) as Void {
-        digits[0] = loadResource(Rez.Drawables.Dig0);
-        digits[1] = loadResource(Rez.Drawables.Dig1);
-        digits[2] = loadResource(Rez.Drawables.Dig2);
-        digits[3] = loadResource(Rez.Drawables.Dig3);
-        digits[4] = loadResource(Rez.Drawables.Dig4);
-        digits[5] = loadResource(Rez.Drawables.Dig5);
-        digits[6] = loadResource(Rez.Drawables.Dig6);
-        digits[7] = loadResource(Rez.Drawables.Dig7);
-        digits[8] = loadResource(Rez.Drawables.Dig8);
-        digits[9] = loadResource(Rez.Drawables.Dig9);
-        digits[dot] = loadResource(Rez.Drawables.Dot);
+        images_nc[0] = loadResource(Rez.Drawables.Dig0NC);
+        images_nc[1] = loadResource(Rez.Drawables.Dig1NC);
+        images_nc[2] = loadResource(Rez.Drawables.Dig2NC);
+        images_nc[3] = loadResource(Rez.Drawables.Dig3NC);
+        images_nc[4] = loadResource(Rez.Drawables.Dig4NC);
+        images_nc[5] = loadResource(Rez.Drawables.Dig5NC);
+        images_nc[6] = loadResource(Rez.Drawables.Dig6NC);
+        images_nc[7] = loadResource(Rez.Drawables.Dig7NC);
+        images_nc[8] = loadResource(Rez.Drawables.Dig8NC);
+        images_nc[9] = loadResource(Rez.Drawables.Dig9NC);
+        images_nc[dot] = loadResource(Rez.Drawables.DotNC);
+
+        images_gs[0] = loadResource(Rez.Drawables.Dig0GS);
+        images_gs[1] = loadResource(Rez.Drawables.Dig1GS);
+        images_gs[2] = loadResource(Rez.Drawables.Dig2GS);
+        images_gs[3] = loadResource(Rez.Drawables.Dig3GS);
+        images_gs[4] = loadResource(Rez.Drawables.Dig4GS);
+        images_gs[5] = loadResource(Rez.Drawables.Dig5GS);
+        images_gs[6] = loadResource(Rez.Drawables.Dig6GS);
+        images_gs[7] = loadResource(Rez.Drawables.Dig7GS);
+        images_gs[8] = loadResource(Rez.Drawables.Dig8GS);
+        images_gs[9] = loadResource(Rez.Drawables.Dig9GS);
+        images_gs[dot] = loadResource(Rez.Drawables.DotGS);
 
         var dc_width = dc.getWidth();
         var dc_height = dc.getHeight();
-        var dig_width = digits[0].getWidth();
-        var dig_height = digits[0].getHeight();
-        var dot_size = digits[dot].getWidth();
+        var dig_width = images_nc[0].getWidth();
+        var dig_height = images_nc[0].getHeight();
+        var dot_size = images_nc[dot].getWidth();
         var dx = 26;
         var dy = 42;
         da_width = 2 * dig_width + dx;
@@ -71,7 +105,7 @@ class IV22LView extends WatchUi.WatchFace {
         }
     }
 
-    // Update the view
+    // Update the view.
     function onUpdate(dc as Dc) as Void {
         var time = System.getClockTime();
         var hour = time.hour;
@@ -86,12 +120,13 @@ class IV22LView extends WatchUi.WatchFace {
         var m1 = time.min / 10;
         var m2 = time.min % 10;
 
+        var color = Properties.getValue("color") as Number;
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-        dc.drawBitmap(xd[0], yd[0], digits[h1]);
-        dc.drawBitmap(xd[1], yd[0], digits[h2]);
-        dc.drawBitmap(xd[0], yd[1], digits[m1]);
-        dc.drawBitmap(xd[1], yd[1], digits[m2]);
+        drawBitmap(dc, xd[0], yd[0], h1, color);
+        drawBitmap(dc, xd[1], yd[0], h2, color);
+        drawBitmap(dc, xd[0], yd[1], m1, color);
+        drawBitmap(dc, xd[1], yd[1], m2, color);
 
         // Do not show second marks on small screens, because they will overlap
         // the digits.
@@ -102,11 +137,11 @@ class IV22LView extends WatchUi.WatchFace {
         if (show_seconds) {
             if (Properties.getValue("seconds_as_dot")) {
                 // Show seconds as a single dot.
-                dc.drawBitmap(xs[time.sec], ys[time.sec], digits[dot]);
+                drawBitmap(dc, xs[time.sec], ys[time.sec], dot, color);
             } else {
                 // Show seconds as a progress bar.
                 for (var s = 0; s <= time.sec; s++) {
-                    dc.drawBitmap(xs[s], ys[s], digits[dot]);
+                    drawBitmap(dc, xs[s], ys[s], dot, color);
                 }
             }
         }

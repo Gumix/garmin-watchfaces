@@ -5,27 +5,32 @@ import Toybox.Application.Properties;
 
 class IV22LApp extends Application.AppBase {
 
-    // Constructor
+    // Constructor.
     public function initialize() {
         AppBase.initialize();
     }
 
-    // onStart() is called on application startup
+    // Called on application startup.
     public function onStart(state as Dictionary?) as Void {
     }
 
-    // onStop() is called on application shutdown
+    // Called on application shutdown.
     public function onStop(state as Dictionary?) as Void {
     }
 
-    // Return the initial view of the application
+    // Return the initial view of the application.
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         return [new IV22LView()];
     }
 
-    // Return the settings view and delegate
+    // Return the settings view and delegate.
     public function getSettingsView() {
         return [new IV22LMenu(), new IV22LMenuDelegate()];
+    }
+
+    // Called when the settings have been changed by Garmin Connect Mobile.
+    public function onSettingsChanged() as Void {
+        WatchUi.requestUpdate();
     }
 }
 

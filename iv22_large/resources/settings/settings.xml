@@ -1,4 +1,36 @@
 <settings>
+    <setting propertyKey="@Properties.color" title="Color">
+        <settingConfig type="list">
+            <listEntry value="0x000000">Natural</listEntry>
+            <listEntry value="0xFFFFFF">White</listEntry>
+            <listEntry value="0xAAAAAA">Light Gray</listEntry>
+            <listEntry value="0x555555">Dark Gray</listEntry>
+            <listEntry value="0xEBC2AF">Light Red</listEntry>
+            <listEntry value="0xFF0000">Red</listEntry>
+            <listEntry value="0xAA0000">Dark Red</listEntry>
+            <listEntry value="0xFF5500">Orange Red</listEntry>
+            <listEntry value="0xFFAA00">Orange</listEntry>
+            <listEntry value="0xAA5500">Dark Orange</listEntry>
+            <listEntry value="0xFFD800">Yellow</listEntry>
+            <listEntry value="0xFFFF00">Yellow Green</listEntry>
+            <listEntry value="0x98FF98">Mint Green</listEntry>
+            <listEntry value="0xCCFF00">Lime</listEntry>
+            <listEntry value="0x7FFF00">Chartreuse</listEntry>
+            <listEntry value="0x0BDA51">Malachite</listEntry>
+            <listEntry value="0x00FF00">Green</listEntry>
+            <listEntry value="0x00AA00">Dark Green</listEntry>
+            <listEntry value="0x889F4A">Olive Green</listEntry>
+            <listEntry value="0xB3E5FF">Baby Blue</listEntry>
+            <listEntry value="0xC7FFEC">Pang</listEntry>
+            <listEntry value="0x89EFD2">Blue Green</listEntry>
+            <listEntry value="0x4FC3FF">Crystal Blue</listEntry>
+            <listEntry value="0x0000FF">Neon Blue</listEntry>
+            <listEntry value="0xDF73FF">Heliotrope</listEntry>
+            <listEntry value="0xFF00FF">Pink</listEntry>
+            <listEntry value="0xCCCCFF">Light Purple</listEntry>
+            <listEntry value="0xAA00FF">Purple</listEntry>
+        </settingConfig>
+    </setting>
     <setting propertyKey="@Properties.show_seconds" title="Show seconds">
         <settingConfig type="boolean" />
     </setting>
