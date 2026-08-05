@@ -1,13 +1,19 @@
 project.manifest = manifest.xml
 
 # Packing format 'png' is not supported by these devices:
+descentg2.resourcePath = $(base.resourcePath);resources-notint
+fr70.resourcePath = $(base.resourcePath);resources-notint
 fr165.resourcePath = $(base.resourcePath);resources-notint
 fr165m.resourcePath = $(base.resourcePath);resources-notint
+instinct3amoled45mm.resourcePath = $(base.resourcePath);resources-notint
+instinct3amoled50mm.resourcePath = $(base.resourcePath);resources-notint
 venusq2.resourcePath = $(base.resourcePath);resources-notint
-descentg2.resourcePath = $(base.resourcePath);resources-notint
 
 base.excludeAnnotations = disable_tint
+descentg2.excludeAnnotations = enable_tint
+fr70.excludeAnnotations = enable_tint
 fr165.excludeAnnotations = enable_tint
 fr165m.excludeAnnotations = enable_tint
+instinct3amoled45mm.excludeAnnotations = enable_tint
+instinct3amoled50mm.excludeAnnotations = enable_tint
 venusq2.excludeAnnotations = enable_tint
-descentg2.excludeAnnotations = enable_tint
