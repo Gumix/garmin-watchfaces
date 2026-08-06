@@ -1,9 +1,7 @@
 <settings>
     <setting propertyKey="@Properties.seconds_mode" title="Seconds">
         <settingConfig type="list">
-            <listEntry value="0">Off</listEntry>
-            <listEntry value="1">Dot</listEntry>
-            <listEntry value="2">Ring</listEntry>
+            <listEntry value="0">Not supported by this device</listEntry>
         </settingConfig>
     </setting>
 </settings>

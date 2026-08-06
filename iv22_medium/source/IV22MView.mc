@@ -7,11 +7,18 @@ import Toybox.Application.Properties;
 
 class IV22MView extends WatchUi.WatchFace {
 
-    // Dot images are stored after digit 9
+    // Dot images are stored after digit 9.
     private enum {
-		dot = 10,
-		small_dot = 11
-	}
+        dot = 10,
+        small_dot = 11,
+    }
+
+    // Values of the "seconds_mode" property. Keep in sync with "settings.xml".
+    private enum {
+        seconds_dot = 1,
+        seconds_ring = 2,
+    }
+
     private var digits as Array<BitmapReference> = new Array<BitmapReference>[12];
 
     // Positions of hours, minutes and dots
@@ -117,18 +124,13 @@ class IV22MView extends WatchUi.WatchFace {
         dc.drawBitmap(xd[:m1], yd[:m1], digits[m1]);
         dc.drawBitmap(xd[:m2], yd[:m2], digits[m2]);
 
-        // Do not show second marks on small screens, because they will overlap
-        // the digits.
-        var show_seconds = !in_sleep_mode
-                           && dc.getWidth() > 360
-                           && dc.getHeight() > 360
-                           && Properties.getValue("show_seconds");
-        if (show_seconds) {
-            if (Properties.getValue("seconds_as_dot")) {
+        if (!in_sleep_mode) {
+            var seconds_mode = Properties.getValue("seconds_mode") as Number;
+            if (seconds_mode == seconds_dot) {
                 // Show seconds as a single dot.
                 dc.drawBitmap(xs[time.sec], ys[time.sec], digits[small_dot]);
-            } else {
-                // Show seconds as a progress bar.
+            } else if (seconds_mode == seconds_ring) {
+                // Show seconds as a progress ring.
                 for (var s = 0; s <= time.sec; s++) {
                     dc.drawBitmap(xs[s], ys[s], digits[small_dot]);
                 }

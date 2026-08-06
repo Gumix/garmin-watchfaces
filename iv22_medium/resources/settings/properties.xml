@@ -1,4 +1,3 @@
 <properties>
-    <property id="show_seconds" type="boolean">true</property>
-    <property id="seconds_as_dot" type="boolean">true</property>
+    <property id="seconds_mode" type="number">1</property>
 </properties>

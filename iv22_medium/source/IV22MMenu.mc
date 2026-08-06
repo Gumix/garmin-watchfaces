@@ -3,7 +3,11 @@ import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.Application.Properties;
 
-// The app settings menu
+// Display names of the "seconds_mode" property.
+// Keep in sync with "settings.xml".
+const SECONDS_NAMES as Array<String> = [ "Off", "Dot", "Ring" ];
+
+// The app settings menu.
 class IV22MMenu extends WatchUi.Menu2 {
 
     function initialize() {
@@ -12,30 +16,39 @@ class IV22MMenu extends WatchUi.Menu2 {
 
         var device = System.getDeviceSettings();
         if (device.screenWidth > 360 && device.screenHeight > 360) {
-            var item_id = "show_seconds";
-            var is_enabled = Properties.getValue(item_id);
-            Menu2.addItem(new WatchUi.ToggleMenuItem("Show seconds", null,
-                                                     item_id, is_enabled, null));
-            item_id = "seconds_as_dot";
-            is_enabled = Properties.getValue(item_id);
-            Menu2.addItem(new WatchUi.ToggleMenuItem("Single dot vs.",
-                                                     "progress bar",
-                                                     item_id, is_enabled, null));
+            var seconds_mode = Properties.getValue("seconds_mode") as Number;
+            if (seconds_mode >= SECONDS_NAMES.size()) {
+                seconds_mode = 0;
+            }
+            Menu2.addItem(new WatchUi.MenuItem(
+                "Seconds", SECONDS_NAMES[seconds_mode], "seconds_mode", null));
+        } else {
+            // Do not show second marks on small screens, because they will
+            // overlap the digits.
+            Menu2.addItem(new WatchUi.MenuItem(
+                "Seconds", "Not supported", null, null));
         }
     }
 }
 
-// Input handler for the app settings menu
+// Input handler for the app settings menu.
 class IV22MMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
         Menu2InputDelegate.initialize();
     }
 
-    // Handle a menu item being selected
+    // Handle a menu item being selected.
     function onSelect(menuItem as MenuItem) as Void {
-        if (menuItem instanceof ToggleMenuItem) {
-            Properties.setValue(menuItem.getId() as String, menuItem.isEnabled());
+        var id = menuItem.getId();
+        if (id == null) {
+            return;
+        }
+        if (id.equals("seconds_mode")) {
+            var seconds_mode = Properties.getValue("seconds_mode") as Number;
+            seconds_mode = (seconds_mode + 1) % SECONDS_NAMES.size();
+            menuItem.setSubLabel(SECONDS_NAMES[seconds_mode]);
+            Properties.setValue("seconds_mode", seconds_mode);
         }
     }
 
