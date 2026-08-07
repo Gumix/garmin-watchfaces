@@ -93,16 +93,67 @@ class IV22LView extends WatchUi.WatchFace {
         xd[1] = xd[0] + dig_width + dx;
         yd[1] = yd[0] + dig_height + dy;
 
-        var xc = (dc_width - dot_size) / 2;
-        var yc = (dc_height - dot_size) / 2;
-        var r = xc < yc ? xc : yc;
+        // Half-extents from the true screen center to a dot's visual center
+        // such that the dot's far edge lands exactly on the screen edge.
+        var a = (dc_width - dot_size) / 2.0;
+        var b = (dc_height - dot_size) / 2.0;
+        var corner_radius = screenCornerRadius(a, b);
         for (var s = 0; s < 60; s++) {
             var angle = Math.toRadians(90 - s * 6);
-            var cos = Math.cos(angle);
-            var sin = Math.sin(angle);
-            xs[s] = Math.round(xc + r * cos);
-            ys[s] = Math.round(yc - r * sin);
+            var point = roundedRectPoint(a, b, corner_radius, angle);
+            xs[s] = Math.round(a + point[0]);
+            ys[s] = Math.round(b - point[1]);
         }
+    }
+
+    // Estimate the on-screen corner radius to trace second marks along. A
+    // round watch is just a degenerate rounded rectangle whose corner
+    // radius equals its half-width; rectangular AMOLED screens with
+    // rounded corners (e.g. Venu X1) don't expose their physical corner
+    // radius, so approximate it as a fraction of the shorter half-extent.
+    private function screenCornerRadius(a as Float, b as Float) as Float {
+        var short_side = a < b ? a : b;
+        if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND) {
+            return short_side;
+        }
+        return short_side * 0.35;
+    }
+
+    // Find where a ray from the center at the given angle crosses the
+    // border of an axis-aligned rounded rectangle with half-extents
+    // (a, b) and corner radius r. Returns [x, y] relative to the center.
+    private function roundedRectPoint(a as Float, b as Float, r as Float,
+                                      angle as Float) as Array<Float> {
+        var dx = Math.cos(angle);
+        var dy = Math.sin(angle);
+        var sx = dx < 0 ? -1 : 1;
+        var sy = dy < 0 ? -1 : 1;
+        var adx = dx * sx;
+        var ady = dy * sy;
+
+        // Straight part of the vertical edge.
+        if (adx > 0) {
+            var t = a / adx;
+            var y = t * ady;
+            if (y <= b - r) {
+                return [sx * a, sy * y] as Array<Float>;
+            }
+        }
+        // Straight part of the horizontal edge.
+        if (ady > 0) {
+            var t = b / ady;
+            var x = t * adx;
+            if (x <= a - r) {
+                return [sx * x, sy * b] as Array<Float>;
+            }
+        }
+        // Circular corner arc, centered at (a - r, b - r) in this quadrant.
+        var cx = a - r;
+        var cy = b - r;
+        var proj = adx * cx + ady * cy;
+        var disc = proj * proj - (cx * cx + cy * cy - r * r);
+        var t = proj + Math.sqrt(disc);
+        return [sx * (adx * t), sy * (ady * t)] as Array<Float>;
     }
 
     // Update the view.
