@@ -93,16 +93,89 @@ class IV22LView extends WatchUi.WatchFace {
         xd[1] = xd[0] + dig_width + dx;
         yd[1] = yd[0] + dig_height + dy;
 
-        var xc = (dc_width - dot_size) / 2;
-        var yc = (dc_height - dot_size) / 2;
-        var r = xc < yc ? xc : yc;
+        // Half-extents from the true screen center to a dot's visual center
+        // such that the dot's far edge lands exactly on the screen edge.
+        var a = (dc_width - dot_size) / 2.0;
+        var b = (dc_height - dot_size) / 2.0;
+        var corner_radius = screenCornerRadius(a, b);
+        var perimeter = 4 * (a - corner_radius) + 4 * (b - corner_radius)
+                       + 2 * Math.PI * corner_radius;
+        // Second marks are spaced evenly by arc length along the perimeter,
+        // not by angle from the center -- otherwise the straight edges and
+        // the rounded corners end up with visibly different mark density.
+        // roundedRectAtDistance() measures its distance from the top-right
+        // corner's start, so shift by (a - corner_radius) to start at
+        // top-center (s = 0), matching a clock's 12 o'clock mark.
+        var start = perimeter - (a - corner_radius);
         for (var s = 0; s < 60; s++) {
-            var angle = Math.toRadians(90 - s * 6);
-            var cos = Math.cos(angle);
-            var sin = Math.sin(angle);
-            xs[s] = Math.round(xc + r * cos);
-            ys[s] = Math.round(yc - r * sin);
+            var dist = (start + perimeter * s / 60.0) % perimeter;
+            var point = roundedRectAtDistance(a, b, corner_radius, dist);
+            xs[s] = Math.round(a + point[0]);
+            ys[s] = Math.round(b - point[1]);
         }
+    }
+
+    // Estimate the on-screen corner radius to trace second marks along. A
+    // round watch is just a degenerate rounded rectangle whose corner
+    // radius equals its half-width; rectangular AMOLED screens with
+    // rounded corners (e.g. Venu X1) don't expose their physical corner
+    // radius, so approximate it as a fraction of the shorter half-extent.
+    private function screenCornerRadius(a as Float, b as Float) as Float {
+        var short_side = a < b ? a : b;
+        if (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND) {
+            return short_side;
+        }
+        return short_side * 0.3;
+    }
+
+    // Walk clockwise around the rounded rectangle's boundary (half-extents
+    // a, b; corner radius r) and return the point [x, y] relative to the
+    // center at arc-length distance `dist` from the start of the top-right
+    // corner arc (where the top edge ends).
+    private function roundedRectAtDistance(a as Float, b as Float, r as Float,
+                                           dist as Float) as Array<Float> {
+        var arc_len = r * Math.PI / 2.0;
+        var edge_x = 2 * (a - r);
+        var edge_y = 2 * (b - r);
+        var d = dist;
+
+        if (d < arc_len) {
+            return arcPoint(a - r, b - r, Math.PI / 2.0, d, r);
+        }
+        d -= arc_len;
+        if (d < edge_y) {
+            return [a, (b - r) - d] as Array<Float>;
+        }
+        d -= edge_y;
+        if (d < arc_len) {
+            return arcPoint(a - r, -(b - r), 0.0, d, r);
+        }
+        d -= arc_len;
+        if (d < edge_x) {
+            return [(a - r) - d, -b] as Array<Float>;
+        }
+        d -= edge_x;
+        if (d < arc_len) {
+            return arcPoint(-(a - r), -(b - r), -Math.PI / 2.0, d, r);
+        }
+        d -= arc_len;
+        if (d < edge_y) {
+            return [-a, -(b - r) + d] as Array<Float>;
+        }
+        d -= edge_y;
+        if (d < arc_len) {
+            return arcPoint(-(a - r), b - r, Math.PI, d, r);
+        }
+        d -= arc_len;
+        return [-(a - r) + d, b] as Array<Float>;
+    }
+
+    // Point on the circle of radius r centered at (cx, cy), starting at
+    // angle theta0 (radians) and sweeping clockwise by arc length d.
+    private function arcPoint(cx as Float, cy as Float, theta0 as Float, d as Float,
+                              r as Float) as Array<Float> {
+        var theta = theta0 - d / r;
+        return [cx + r * Math.cos(theta), cy + r * Math.sin(theta)] as Array<Float>;
     }
 
     // Update the view.
