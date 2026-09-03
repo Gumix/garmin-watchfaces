@@ -10,6 +10,12 @@ class IV22LView extends WatchUi.WatchFace {
     // The dot image is stored after digit 9.
     private enum {dot = 10}
 
+    // Values of the "seconds_mode" property. Keep in sync with "settings.xml".
+    private enum {
+        seconds_dot = 1,
+        seconds_ring = 2,
+    }
+
     // Bitmap references for digits 0-9 and the dot, stored in 2 formats:
     // 24-bit RGB (Natural Color) and 8-bit GrayScale (for tinting).
     private var images_nc as Array<BitmapReference> = new Array<BitmapReference>[11];
@@ -128,18 +134,13 @@ class IV22LView extends WatchUi.WatchFace {
         drawBitmap(dc, xd[0], yd[1], m1, color);
         drawBitmap(dc, xd[1], yd[1], m2, color);
 
-        // Do not show second marks on small screens, because they will overlap
-        // the digits.
-        var show_seconds = !in_sleep_mode
-                           && dc.getWidth() > 390
-                           && dc.getHeight() > 390
-                           && Properties.getValue("show_seconds");
-        if (show_seconds) {
-            if (Properties.getValue("seconds_as_dot")) {
+        if (!in_sleep_mode) {
+            var seconds_mode = Properties.getValue("seconds_mode") as Number;
+            if (seconds_mode == seconds_dot) {
                 // Show seconds as a single dot.
                 drawBitmap(dc, xs[time.sec], ys[time.sec], dot, color);
-            } else {
-                // Show seconds as a progress bar.
+            } else if (seconds_mode == seconds_ring) {
+                // Show seconds as a progress ring.
                 for (var s = 0; s <= time.sec; s++) {
                     drawBitmap(dc, xs[s], ys[s], dot, color);
                 }

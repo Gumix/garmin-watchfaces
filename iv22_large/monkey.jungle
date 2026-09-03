@@ -17,3 +17,27 @@ fr165m.excludeAnnotations = enable_tint
 instinct3amoled45mm.excludeAnnotations = enable_tint
 instinct3amoled50mm.excludeAnnotations = enable_tint
 venusq2.excludeAnnotations = enable_tint
+
+# Screen resolution is 390x390 or smaller, so seconds would overlap the digits.
+# "settings.xml" is merged per-setting across resourcePath entries, so this
+# combines cleanly with the notint override above for devices in both groups.
+approachs50.resourcePath = $(base.resourcePath);resources-small
+approachs7042mm.resourcePath = $(base.resourcePath);resources-small
+descentg2.resourcePath = $(descentg2.resourcePath);resources-small
+descentmk343mm.resourcePath = $(base.resourcePath);resources-small
+epix2pro42mm.resourcePath = $(base.resourcePath);resources-small
+fr70.resourcePath = $(fr70.resourcePath);resources-small
+fr165.resourcePath = $(fr165.resourcePath);resources-small
+fr165m.resourcePath = $(fr165m.resourcePath);resources-small
+fr170.resourcePath = $(base.resourcePath);resources-small
+fr170m.resourcePath = $(base.resourcePath);resources-small
+fr57042mm.resourcePath = $(base.resourcePath);resources-small
+instinct3amoled45mm.resourcePath = $(instinct3amoled45mm.resourcePath);resources-small
+marq2.resourcePath = $(base.resourcePath);resources-small
+marq2aviator.resourcePath = $(base.resourcePath);resources-small
+venu3s.resourcePath = $(base.resourcePath);resources-small
+venu441mm.resourcePath = $(base.resourcePath);resources-small
+venusq2.resourcePath = $(venusq2.resourcePath);resources-small
+venusq2m.resourcePath = $(base.resourcePath);resources-small
+vivoactive5.resourcePath = $(base.resourcePath);resources-small
+vivoactive6.resourcePath = $(base.resourcePath);resources-small
