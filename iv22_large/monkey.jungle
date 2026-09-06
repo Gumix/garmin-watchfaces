@@ -9,35 +9,53 @@ instinct3amoled45mm.resourcePath = $(base.resourcePath);resources-notint
 instinct3amoled50mm.resourcePath = $(base.resourcePath);resources-notint
 venusq2.resourcePath = $(base.resourcePath);resources-notint
 
-base.excludeAnnotations = disable_tint
-descentg2.excludeAnnotations = enable_tint
-fr70.excludeAnnotations = enable_tint
-fr165.excludeAnnotations = enable_tint
-fr165m.excludeAnnotations = enable_tint
-instinct3amoled45mm.excludeAnnotations = enable_tint
-instinct3amoled50mm.excludeAnnotations = enable_tint
-venusq2.excludeAnnotations = enable_tint
-
 # Screen resolution is 390x390 or smaller, so seconds would overlap the digits.
 # "settings.xml" is merged per-setting across resourcePath entries, so this
 # combines cleanly with the notint override above for devices in both groups.
+#
+# Devices that inherit base tint setting:
 approachs50.resourcePath = $(base.resourcePath);resources-small
 approachs7042mm.resourcePath = $(base.resourcePath);resources-small
-descentg2.resourcePath = $(descentg2.resourcePath);resources-small
 descentmk343mm.resourcePath = $(base.resourcePath);resources-small
 epix2pro42mm.resourcePath = $(base.resourcePath);resources-small
-fr70.resourcePath = $(fr70.resourcePath);resources-small
-fr165.resourcePath = $(fr165.resourcePath);resources-small
-fr165m.resourcePath = $(fr165m.resourcePath);resources-small
 fr170.resourcePath = $(base.resourcePath);resources-small
 fr170m.resourcePath = $(base.resourcePath);resources-small
 fr57042mm.resourcePath = $(base.resourcePath);resources-small
-instinct3amoled45mm.resourcePath = $(instinct3amoled45mm.resourcePath);resources-small
 marq2.resourcePath = $(base.resourcePath);resources-small
 marq2aviator.resourcePath = $(base.resourcePath);resources-small
 venu3s.resourcePath = $(base.resourcePath);resources-small
 venu441mm.resourcePath = $(base.resourcePath);resources-small
-venusq2.resourcePath = $(venusq2.resourcePath);resources-small
 venusq2m.resourcePath = $(base.resourcePath);resources-small
 vivoactive5.resourcePath = $(base.resourcePath);resources-small
 vivoactive6.resourcePath = $(base.resourcePath);resources-small
+#
+# Devices that already override tint:
+descentg2.resourcePath = $(descentg2.resourcePath);resources-small
+fr70.resourcePath = $(fr70.resourcePath);resources-small
+fr165.resourcePath = $(fr165.resourcePath);resources-small
+fr165m.resourcePath = $(fr165m.resourcePath);resources-small
+instinct3amoled45mm.resourcePath = $(instinct3amoled45mm.resourcePath);resources-small
+venusq2.resourcePath = $(venusq2.resourcePath);resources-small
+
+base.excludeAnnotations = disable_tint;disable_seconds
+approachs50.excludeAnnotations = disable_tint;enable_seconds
+approachs7042mm.excludeAnnotations = disable_tint;enable_seconds
+descentg2.excludeAnnotations = enable_tint;enable_seconds
+descentmk343mm.excludeAnnotations = disable_tint;enable_seconds
+epix2pro42mm.excludeAnnotations = disable_tint;enable_seconds
+fr165.excludeAnnotations = enable_tint;enable_seconds
+fr165m.excludeAnnotations = enable_tint;enable_seconds
+fr170.excludeAnnotations = disable_tint;enable_seconds
+fr170m.excludeAnnotations = disable_tint;enable_seconds
+fr57042mm.excludeAnnotations = disable_tint;enable_seconds
+fr70.excludeAnnotations = enable_tint;enable_seconds
+instinct3amoled45mm.excludeAnnotations = enable_tint;enable_seconds
+instinct3amoled50mm.excludeAnnotations = enable_tint;disable_seconds
+marq2.excludeAnnotations = disable_tint;enable_seconds
+marq2aviator.excludeAnnotations = disable_tint;enable_seconds
+venu3s.excludeAnnotations = disable_tint;enable_seconds
+venu441mm.excludeAnnotations = disable_tint;enable_seconds
+venusq2.excludeAnnotations = enable_tint;enable_seconds
+venusq2m.excludeAnnotations = disable_tint;enable_seconds
+vivoactive5.excludeAnnotations = disable_tint;enable_seconds
+vivoactive6.excludeAnnotations = disable_tint;enable_seconds

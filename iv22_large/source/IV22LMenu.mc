@@ -10,24 +10,27 @@ const SECONDS_NAMES as Array<String> = [ "Off", "Dot", "Ring" ];
 // The app settings menu.
 class IV22LMenu extends WatchUi.Menu2 {
 
+    (:disable_seconds)
+    private function addSecondsItem() as Void {
+        Menu2.addItem(new WatchUi.MenuItem(
+            "Seconds", "Not supported", null, null));
+    }
+
+    (:enable_seconds)
+    private function addSecondsItem() as Void {
+        var seconds_mode = Properties.getValue("seconds_mode") as Number;
+        if (seconds_mode >= SECONDS_NAMES.size()) {
+            seconds_mode = 0;
+        }
+        Menu2.addItem(new WatchUi.MenuItem(
+            "Seconds", SECONDS_NAMES[seconds_mode], "seconds_mode", null));
+    }
+
     function initialize() {
         var app_name = WatchUi.loadResource(Rez.Strings.AppName) as String;
         Menu2.initialize({:title => app_name});
 
-        var device = System.getDeviceSettings();
-        if (device.screenWidth > 390 && device.screenHeight > 390) {
-            var seconds_mode = Properties.getValue("seconds_mode") as Number;
-            if (seconds_mode >= SECONDS_NAMES.size()) {
-                seconds_mode = 0;
-            }
-            Menu2.addItem(new WatchUi.MenuItem(
-                "Seconds", SECONDS_NAMES[seconds_mode], "seconds_mode", null));
-        } else {
-            // Do not show second marks on small screens, because they will
-            // overlap the digits.
-            Menu2.addItem(new WatchUi.MenuItem(
-                "Seconds", "Not supported", null, null));
-        }
+        addSecondsItem();
     }
 }
 
