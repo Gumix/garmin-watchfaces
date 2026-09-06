@@ -3,5 +3,5 @@ project.manifest = manifest.xml
 # Screen resolution is 360x360 or smaller, so seconds would overlap the digits.
 fr265s.resourcePath = $(base.resourcePath);resources-small
 venu2s.resourcePath = $(base.resourcePath);resources-small
-venusq2.resourcePath = $(venusq2.resourcePath);resources-small
+venusq2.resourcePath = $(base.resourcePath);resources-small
 venusq2m.resourcePath = $(base.resourcePath);resources-small
