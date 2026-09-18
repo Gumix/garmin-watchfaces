@@ -1,3 +1,4 @@
 <properties>
+    <property id="color" type="number">0x000000</property>
     <property id="seconds_mode" type="number">1</property>
 </properties>

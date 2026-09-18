@@ -27,6 +27,11 @@ class IV22MApp extends Application.AppBase {
     public function getSettingsView() {
         return [new IV22MMenu(), new IV22MMenuDelegate()];
     }
+
+    // Called when the settings have been changed by Garmin Connect Mobile.
+    public function onSettingsChanged() as Void {
+        WatchUi.requestUpdate();
+    }
 }
 
 function getApp() as IV22MApp {
